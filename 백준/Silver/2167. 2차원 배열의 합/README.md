@@ -25,4 +25,5 @@
 ### 출력 
 
  <p>K개의 줄에 순서대로 배열의 합을 출력한다. 배열의 합은 2<sup>31</sup>-1보다 작거나 같다.</p>
+![image](https://github.com/user-attachments/assets/3d6e07d6-dde8-45ea-a680-f07566d5d6d8)
 
