@@ -15,8 +15,8 @@ for j in range(word_length):
         if words[i][j] != tmp:
             res[j] = '?'
             break
-        else:
-            res[j] = tmp
+    else:
+        res[j] = tmp
 
 output = ''.join(res)
 print(output)
