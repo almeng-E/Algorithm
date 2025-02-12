@@ -1,24 +1,23 @@
-import sys
-sys.setrecursionlimit(10**6)
-input = sys.stdin.readline
+def dfs_stack(graph, start):
+    visited = [0 for _ in range(N + 1)]
+    stack = [start]
+    cnt = 0
+    while stack:
+        v = stack.pop()
+        if not visited[v]:
+            cnt += 1
+            visited[v] = cnt
+            for next_node in reversed(graph[v]):
+                if not visited[next_node]:
+                    stack.append(next_node)
 
-def dfs(graph, visited, v):
-    global cnt
-    cnt += 1
-    visited[v] = cnt
-    for i in graph[v]:
-        if not visited[i]:
-            dfs(graph, visited, i)
-
-
-
+    return visited
 
 N, M, R = map(int, input().split())
 
 graph = [[] for _ in range(N+1)]
-visited = [0 for _ in range(N+1)]
 
-# 그래프 정보 저장
+# 그래프 정보 저장 (양방향)
 for _ in range(M):
     U, V = map(int, input().split())
     graph[U].append(V)
@@ -29,8 +28,7 @@ for i in range(1, N+1):
     graph[i].sort()
 
 # dfs 실행
-cnt = 0
-dfs(graph, visited, R)
+visited = dfs_stack(graph, R)
 
 
 # 출력
