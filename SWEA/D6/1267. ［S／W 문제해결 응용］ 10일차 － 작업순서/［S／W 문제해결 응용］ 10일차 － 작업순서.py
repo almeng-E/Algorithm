@@ -1,45 +1,30 @@
-# 조금 더 느린  ?? 코드 ??
-# must_visited 탐색 회수가 훨씬 많아 더 느릴 것으로 예상됨
+def dfs(v):
+    # graph, visited, in_degree --> result
+    visited[v] = True
+    result.append(v)
+    for next_node in graph[v]:
+        in_degree[next_node] -= 1
+        if in_degree[next_node] == 0 and not visited[next_node]:
+            dfs(next_node)
 
-
-def dfs(graph, visited, current_node):
-    global must_precede, res
-    # 방문 처리 전, 체크하기    <<< 차이점
-    for i in must_precede[current_node]:
-        if not visited[i]:
-            return
-    # 방문 및 재귀 호출
-    res.append(current_node)
-    visited[current_node] = 1
-    # 재귀
-    for next_node in graph[current_node]:
-        if not visited[next_node]:
-            dfs(graph, visited, next_node)
-
-
-
-for TC in range(10):
+T = 10
+for TC in range(T):
     V, E = map(int, input().split())
-
-    edge_input = list(map(int, input().split()))
+    edges = list(map(int, input().split()))
 
     graph = [[] for _ in range(V+1)]
-    visited = [1] + [0 for _ in range(V+1)]
-    must_precede = [[] for _ in range(V+1)]
-    res = []
-    # 그래프 정보 입력(방향 o)
-    # 선행 정보 입력(거꾸로)
-    for i in range(0, len(edge_input), 2):
-        graph[edge_input[i]].append(edge_input[i+1])
-        must_precede[edge_input[i+1]].append(edge_input[i])
+    visited = [False for _ in range(V+1)]
+    # 진입 차수
+    in_degree = [0 for _ in range(V+1)]
+    # 그래프 저장
+    for i in range(0, 2*E, 2):
+        graph[edges[i]].append(edges[i+1])
+        in_degree[edges[i+1]] += 1
 
-    while True:
-        if sum(visited) == V+1:
-            break
+    result = []
+    # dfs
+    for node in range(1, V+1):
+        if in_degree[node] == 0 and not visited[node]:
+            dfs(node)
 
-        for node in range(1, V+1):
-            if not visited[node]:
-                dfs(graph, visited, node)
-
-    print(f'#{TC+1} ', end="")
-    print(*res)
+    print(f'#{TC+1}', *result)
