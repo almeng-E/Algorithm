@@ -1,19 +1,4 @@
-def dfs(x, y):
-    global res
-    if board[x][y] == 3:
-        res = 1
-        return
-
-    board[x][y] = 1
-
-
-    for dx, dy in steps:
-        nx, ny = x + dx, y + dy
-        if nx in (-1, 16) or ny in (-1, 16): continue
-        if board[nx][ny] == 1: continue
-
-        dfs(nx, ny)
-        board[nx][ny] = 0
+from collections import deque
 
 
 steps = ((+1, 0), (-1, 0), (0, +1), (0, -1))
@@ -33,6 +18,22 @@ for _ in range(10):
                 ex, ey = i, j
 
     res = 0
-    dfs(sx, sy)
-    
+
+    queue = deque()
+    queue.append((sx, sy))
+    while queue:
+        x, y = queue.popleft()
+        board[x][y] = 1
+
+
+        for dx, dy in steps:
+            nx, ny = x + dx, y + dy
+            if nx in (-1, 16) or ny in (-1, 16): continue
+            if board[nx][ny] == 1: continue
+
+            if board[nx][ny] == 3:
+                res = 1
+                break
+            queue.append((nx, ny))
+
     print(f'#{TC} {res}')
