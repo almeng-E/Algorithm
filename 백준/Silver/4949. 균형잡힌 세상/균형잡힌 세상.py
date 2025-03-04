@@ -1,3 +1,6 @@
+import sys
+input = sys.stdin.readline
+
 while True:
     sentence = input().rstrip()
 
