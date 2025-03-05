@@ -1,17 +1,12 @@
 def in_order(v):
-
-    if tree[v] == 0:
+    if v not in tree:
         return
 
-    # 왼쪽 자식
-    if left[v]:
-        in_order(left[v])
-    # 자신 호출
-    print(tree[v], end="")
-    # 오른쪽 자식 호출
-    if right[v]:
-        in_order(right[v])
-
+    if tree[v][1]:
+        in_order(tree[v][1][0])
+    print(tree[v][0], end="")
+    if len(tree[v][1]) == 2:
+        in_order(tree[v][1][1])
 
 
 
@@ -19,18 +14,13 @@ def in_order(v):
 for TC in range(10):
     N = int(input())
 
-    tree = [0] * (N+1)
-    left = [0] * (N+1)
-    right = [0] * (N+1)
+    tree = dict()
 
     # 정점 정보 입력
     for _ in range(N):
         a, b, *c = input().split()
-        tree[int(a)] = b
-        if len(c) >= 1:
-            left[int(a)] = int(c[0])
-        if len(c) == 2:
-            right[int(a)] = int(c[1])
+        tree[int(a)] = (b, list(map(int, c)))
+
 
     print(f'#{TC+1} ', end="")
     in_order(1)
