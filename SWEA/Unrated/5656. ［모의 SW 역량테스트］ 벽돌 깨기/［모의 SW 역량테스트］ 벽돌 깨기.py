@@ -1,11 +1,11 @@
 from collections import deque
 from itertools import product
 from copy import deepcopy
-
-
+ 
+ 
 def boom(drop_point, boom_board):
     queue = deque()
-
+ 
     # 이번 팡팡의 sx, sy 값 찾기
     sx = drop_point
     for i in range(H-1, -1, -1):
@@ -33,8 +33,8 @@ def boom(drop_point, boom_board):
                 if boom_board[nx][ny] > 1:
                     queue.append((nx, ny, boom_board[nx][ny]))
                 boom_board[nx][ny] = 0
-
-
+ 
+ 
     # 떨어지는 로직
     for i in range(W):
         tmp_line = []
@@ -42,23 +42,23 @@ def boom(drop_point, boom_board):
             if boom_board[i][j] != 0:
                 tmp_line.append(boom_board[i][j])
         boom_board[i][:] = tmp_line + [0] * (H - len(tmp_line))
-
-
+ 
+ 
 #          상       하       좌      우
 steps = ((-1, 0), (+1, 0), (0, -1), (0, +1))
-
+ 
 T = int(input())
 for TC in range(T):
     # N 공 개수, W 가로 H 높이
     N, W, H = map(int, input().split())
-
+ 
     board_input = [list(map(int, input().split())) for _ in range(H)]
     # 보드는 이제 90도 회전하여 관리
     board = [[] for _ in range(W)]
     for j in range(W):
         for i in range(H-1, -1, -1):
             board[j].append(board_input[i][j])
-
+ 
     # 후보
     nHr = product(range(W), repeat=N)
     # 전체 탐색
@@ -67,17 +67,17 @@ for TC in range(T):
         boom_board = deepcopy(board)
         for drop_point in trial:
             boom(drop_point, boom_board)
-
+ 
         # 이후 전체 개수 확인
         check = 0
         for i in range(W):
             for j in range(H):
                 if boom_board[i][j] != 0:
                     check += 1
-
+ 
         res = min(res, check)
         if res == 0:
             break
-
-
+ 
+ 
     print(f'#{TC+1} {res}')
