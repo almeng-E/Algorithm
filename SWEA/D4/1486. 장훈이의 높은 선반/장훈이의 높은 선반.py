@@ -1,4 +1,18 @@
-from itertools import combinations
+def dfs(c_idx, tmp_sum):
+    global res
+    if tmp_sum < B:
+        return
+    if c_idx == N:
+        res = min(res, tmp_sum-B)
+        return
+
+
+    dfs(c_idx+1, tmp_sum)
+    tmp_sum -= HEIGHTS[c_idx]
+    dfs(c_idx+1, tmp_sum)
+
+
+
 
 T = int(input())
 
@@ -7,12 +21,6 @@ for TC in range(T):
     HEIGHTS = list(map(int, input().split()))
 
     res = B
-    for i in range(1, N+1):
-        nCr = combinations(range(N), i)
-        for comb in nCr:
-            tmp = 0
-            for cc in comb:
-                tmp += HEIGHTS[cc]
-            if tmp >= B:
-                res = min(res, abs(tmp-B))
+    dfs(0, sum(HEIGHTS))
+
     print(f'#{TC+1} {res}')
