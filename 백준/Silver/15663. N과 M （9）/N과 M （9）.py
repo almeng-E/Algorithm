@@ -1,16 +1,16 @@
 def make(tmp_list):
     if len(tmp_list) == M:
-        my_combs.add(tuple(tmp_list))
+        print(*tmp_list)
         return
 
 
-    for i in range(N):
-        if not used[i]:
-            used[i] = True
-            tmp_list.append(arr[i])
+    for i in my_nums.keys():
+        if my_nums[i] > 0:
+            my_nums[i] -= 1
+            tmp_list.append(i)
             make(tmp_list)
             tmp_list.pop()
-            used[i] = False
+            my_nums[i] += 1
 
 
 N, M = map(int, input().split())
@@ -18,13 +18,12 @@ N, M = map(int, input().split())
 arr = list(map(int, input().split()))
 arr.sort()
 
-used = [0] * N
+my_nums = dict()
+for i in arr:
+    if i not in my_nums:
+        my_nums[i] = 1
+    else:
+        my_nums[i] += 1
 
-my_combs = set()
 
 make([])
-
-my_combs = list(my_combs)
-my_combs.sort()
-for i in my_combs:
-    print(*i)
