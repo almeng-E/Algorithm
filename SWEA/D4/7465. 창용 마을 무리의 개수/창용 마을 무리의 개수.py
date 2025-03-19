@@ -1,29 +1,35 @@
-# DFS 풀이
-def dfs(v):
-    global cnt
-    visited[v] = True
-    for n_node in graph[v]:
-        if not visited[n_node]:
-            dfs(n_node)
+# disjoint-set ...
+
+def make_set(n):
+    p = [i for i in range(n+1)]
+    return p
+
+def find_set(x):
+    if p[x] != x:
+        p[x] = find_set(p[x])
+    return p[x]
+
+
+def union(x, y):
+    root_x = find_set(x)
+    root_y = find_set(y)
+
+    if root_x == root_y:
+        return
+    else:
+        p[root_x] = root_y
 
 
 T = int(input())
-
 for TC in range(T):
     N, M = map(int, input().split())
 
-    graph = [[] for _ in range(N+1)]
-    visited = [False for _ in range(N+1)]
-
+    p = make_set(N)
     for _ in range(M):
         a, b = map(int, input().split())
-        graph[a].append(b)
-        graph[b].append(a)
-
-    cnt = 0
-    for node in range(1, N+1):
-        if not visited[node]:
-            dfs(node)
-            cnt += 1
-
-    print(f'#{TC+1} {cnt}')
+        union(a, b)
+    res = 0
+    for i in range(1, N+1):
+        if i == p[i]:
+            res += 1
+    print(f'#{TC+1} {res}')
