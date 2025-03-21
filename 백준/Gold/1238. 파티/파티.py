@@ -1,7 +1,11 @@
 from heapq import heappop, heappush
+import sys
+input = sys.stdin.readline
+
+from heapq import heappop, heappush
 
 
-def djikstra(s):
+def djikstra(s, graph):
     global res
     distance = [INF] * (N + 1)
 
@@ -30,17 +34,18 @@ INF = float('inf')
 N, M, X = map(int, input().split())
 
 graph = [[] for _ in range(N + 1)]
-
+r_graph = [[] for _ in range(N + 1)]
 for _ in range(M):
     x, y, c = map(int, input().split())
     graph[x].append((y, c))  # 다음 노드 , 가중치
+    r_graph[y].append((x, c))
 
 res = 0
-base_to_homes = djikstra(X)
+party_to_home = djikstra(X, graph)
+home_to_party = djikstra(X, r_graph)
+
 
 for i in range(1, N + 1):
     if i != X:
-        tmp = djikstra(i)
-        res = max(res, tmp[X] + base_to_homes[i])
-
+        res = max(res, party_to_home[i]+home_to_party[i])
 print(res)
