@@ -5,10 +5,25 @@ cs = list(map(int, input().split()))
 
 arr = list(zip(ms, cs))
 
+# cost : value
+MEMO = {}
+MEMO[0] = 0
+
 target = sum(ms)-M
-DP = [sum(cs)] * (target+1)
 
 for byte, cost in arr:
-    for i in range(0, target+1-byte):
-        DP[i] = min(DP[i], DP[i+byte] - cost)
-print(DP[0])
+    # 현재 상태 메모
+    tmp = {}
+    for d_c, d_b in MEMO.items():
+        # index-out
+        if d_b + byte > target:
+            continue
+
+        if (d_c + cost) in MEMO:
+            if MEMO[d_c + cost] <= d_b + byte:
+                continue
+        tmp[d_c + cost] = d_b + byte
+
+    MEMO.update(tmp)
+
+print(sum(cs) - max(MEMO.keys()))
