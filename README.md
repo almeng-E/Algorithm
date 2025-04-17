@@ -8,7 +8,7 @@
 
 ### SSAFY 
 - 25.02.18 : A+ 형 취득
-- ~~~~~~~~ : B 형 도전중...
+- ~ : B 형 도전중...
 
 
 This is an auto push repository for Baekjoon Online Judge created with [BaekjoonHub](https://github.com/BaekjoonHub/BaekjoonHub).
