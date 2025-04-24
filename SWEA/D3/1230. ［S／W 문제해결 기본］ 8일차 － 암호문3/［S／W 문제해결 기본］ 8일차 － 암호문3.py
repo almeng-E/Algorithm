@@ -4,7 +4,7 @@ for TC in range(10):
     pws = deque(input().split())
     M = int(input())
     commands = deque(input().split())
-
+ 
     while commands:
         C = commands.popleft()
         if C == 'I':
@@ -15,7 +15,7 @@ for TC in range(10):
                 s.append(commands.popleft())
             for i in range(y-1, -1, -1):
                 pws.insert(x, s[i])
-
+ 
         elif C == 'D':
             x = int(commands.popleft())
             y = int(commands.popleft())
@@ -26,7 +26,7 @@ for TC in range(10):
             y = int(commands.popleft())
             for _ in range(y):
                 pws.append(commands.popleft())
-
+ 
     res = []
     for _ in range(10):
         res.append(pws.popleft())
