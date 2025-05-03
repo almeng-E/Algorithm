@@ -1,20 +1,15 @@
 import sys
-
-buff = bytearray((1 << 25)//8)
-
-s = ''
+buff = bytearray(33554432//8 + 1)
+num = 0
 while True:
-    c = sys.stdin.read(1)
-    if c.isnumeric():
-        s += c
+    b = sys.stdin.buffer.read(1)
+    if b != b' ' and b != b'\n':
+        num = num*10 + int(b)
     else:
-
-        num = int(s)
-        idx = num // 8
-        off = num % 8
+        idx, off = divmod(num, 8)
         if not buff[idx] & (1 << off):
             print(num, end=' ')
             buff[idx] |= (1 << off)
-        s = ''
-        if c != ' ':
-            break
+        num = 0
+    if b == b'\n':
+        break
