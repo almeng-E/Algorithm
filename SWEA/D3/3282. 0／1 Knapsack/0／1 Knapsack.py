@@ -1,17 +1,15 @@
 T = int(input())
 for TC in range(1, T+1):
     N, K = map(int, input().split())
-    item = []
-    for _ in range(N):
-        item.append(tuple(map(int, input().split())))
 
-    DP = [[0 for _ in range(K+1)] for _ in range(N+1)]
+    items = [list(map(int, input().split())) for _ in range(N)]
 
-    for i in range(N-1, -1, -1):
-        w, v = item[i]
-        for j in range(K, -1, -1):
-            take = v + (DP[i+1][j-w] if j>=w else -float('inf'))
-            skip = DP[i+1][j]
-            DP[i][j] = max(take, skip)
+    DP = [0] * (K+1)
 
-    print(f'#{TC} {DP[0][K]}')
+    for item, value in items:
+        for kg in range(K, item-1, -1):
+            # 넣는게 이득인지 판단
+            if DP[kg] < DP[kg - item] + value:
+                DP[kg] = DP[kg - item] + value
+
+    print(f'#{TC} {DP[K]}')
