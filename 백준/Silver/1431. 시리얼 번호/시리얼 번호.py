@@ -1,21 +1,14 @@
-s_dict = dict()
+lst = []
 N = int(input())
 
 for _ in range(N):
     ser = input()
-    L = len(ser)
     S = 0
     for i in ser:
         if i.isdigit():
             S += int(i)
-    # L : [S, word]
+    lst.append((S, ser))
 
-    if L in s_dict:
-        s_dict[L].append((S, ser))
-    else:
-        s_dict[L] = [(S, ser)]
-
-for key in sorted(s_dict.keys()):
-    lst = s_dict[key]
-    for i in sorted(lst):
-        print(i[1])
+lst.sort(key=lambda x: (len(x[1]), x[0], x[1]))
+for i in lst:
+    print(i[1])
