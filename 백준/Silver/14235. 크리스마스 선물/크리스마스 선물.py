@@ -1,5 +1,6 @@
 import heapq
-
+import sys
+input = sys.stdin.readline
 N = int(input())
 bag = []
 for _ in range(N):
