@@ -1,11 +1,14 @@
+import sys
+input = sys.stdin.readline
+
 from collections import Counter
 i = 1
 while True:
-    cmd = input()
+    cmd = input().rstrip()
     if cmd == 'END':
         break
     key = Counter(cmd)
-    alpha = Counter(input())
+    alpha = Counter(input().rstrip())
     
     if key == alpha:
         ret = 'same'
