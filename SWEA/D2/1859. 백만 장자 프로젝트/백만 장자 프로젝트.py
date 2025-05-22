@@ -1,18 +1,15 @@
 T = int(input())
-for TC in range(T):
+for TC in range(1, T+1):
     N = int(input())
+    price = list(map(int, input().split()))
 
-    prices = list(map(int, input().split()))
 
-    mp = [0] * (N+1)
-    for i in range(N-1, -1, -1):
-        if prices[i] > mp[i+1]:
-            mp[i] = prices[i]
-        else:
-            mp[i] = mp[i+1]
+    curr_max = 0
     res = 0
+    for i in range(N-1, -1, -1):
+        if curr_max < price[i]:
+            curr_max = price[i]
+        else:
+            res += curr_max - price[i]
 
-    for i in range(N):
-        if mp[i] > prices[i]:
-            res += mp[i] - prices[i]
-    print(f'#{TC+1} {res}')
+    print(f'#{TC} {res}')
