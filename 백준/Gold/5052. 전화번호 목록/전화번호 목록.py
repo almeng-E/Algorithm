@@ -1,6 +1,5 @@
 import sys
 input = sys.stdin.readline
-
 class Node:
     def __init__(self):
         self.is_terminal = False
@@ -8,10 +7,7 @@ class Node:
 
 def sol():
     N = int(input())
-
     arr = list(input().rstrip() for _ in range(N))
-    arr.sort(key=len)
-    # print(arr)
 
     for num in arr:
         cur = ROOT
@@ -23,6 +19,8 @@ def sol():
                 return False
 
             cur = cur.child[s]
+        if cur.child:
+            return False
         cur.is_terminal = True
 
     return True
@@ -30,9 +28,7 @@ def sol():
 
 T = int(input())
 
-
 for _ in range(T):
     ROOT = Node()
-
     res = sol()
     print('YES' if res else 'NO')
