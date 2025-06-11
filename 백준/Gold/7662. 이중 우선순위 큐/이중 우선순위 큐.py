@@ -1,13 +1,12 @@
 import sys
 input = sys.stdin.readline
-
 from heapq import heappop, heappush
-T = int(input())
-for _ in range(T):
-    hi_q = []    # max-heap
+
+def main():
+    hi_q = []  # max-heap
     lo_q = []
 
-    hi_lazy = [] # max-heap
+    hi_lazy = []  # max-heap
     lo_lazy = []
 
     k = int(input())
@@ -46,3 +45,8 @@ for _ in range(T):
         print('EMPTY')
     else:
         print(-hi_q[0], lo_q[0])
+
+
+T = int(input())
+for _ in range(T):
+    main()
