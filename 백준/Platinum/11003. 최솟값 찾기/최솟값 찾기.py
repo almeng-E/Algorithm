@@ -1,32 +1,23 @@
 import sys
 input = sys.stdin.readline
+write = sys.stdout.write
 
-
-from heapq import heappop, heappush
+from collections import deque
 
 N, L = map(int, input().split())
 arr = list(map(int, input().split()))
 
-res = []
-curr = []
-lazy = []
+queue = deque()
 
-# 초반 ~ DL
-for i in range(L):
-    heappush(curr, arr[i])
-    res.append(str(curr[0]))
+for i, v in enumerate(arr):
+    if i-L >= 0 and queue[0][0] <= i-L:
+        queue.popleft()
 
-# 후반 DL+1 ~
-for i in range(L, N):
-    heappush(lazy, arr[i-L])
-    heappush(curr, arr[i])
+    if not queue:
+        queue.append((i, v))
+    else:
+        while queue and queue[-1][1] >= v:
+            queue.pop()
+        queue.append((i, v))
 
-    while lazy and lazy[0] == curr[0]:
-        heappop(lazy)
-        heappop(curr)
-    
-    res.append(str(curr[0]))
-    
-print(" ".join(res))
-
-
+    write(str(queue[0][1]) + ' ')
