@@ -1,13 +1,14 @@
 import sys
 input = sys.stdin.readline
-write = sys.stdout.write
 
 from collections import deque
 
 N, L = map(int, input().split())
 arr = list(map(int, input().split()))
+res = []
 
 queue = deque()
+# queue.append((0, -float('inf')))
 
 for i, v in enumerate(arr):
     if i-L >= 0 and queue[0][0] <= i-L:
@@ -20,4 +21,8 @@ for i, v in enumerate(arr):
             queue.pop()
         queue.append((i, v))
 
-    write(str(queue[0][1]) + ' ')
+
+    res.append(str(queue[0][1]))
+
+print(" ".join(res))
+
