@@ -6,16 +6,12 @@ arr = [int(input()) for _ in range(N)]
 arr.sort()
 
 res = float('inf')
-for i in range(N-1):
-    left = i
-    right = N-1
-
-    while left <= right:
-        mid = (left + right) // 2
-        if arr[mid] - arr[i] < M:
-            left = mid + 1
-        else:
-            res = min(res, arr[mid] - arr[i])
-            right = mid - 1
+j = 0
+for i in range(N):
+    while j < N and arr[j] - arr[i] < M:
+        j += 1
+    if j == N:
+        break
+    res = min(res, arr[j] - arr[i])
 
 print(res)
