@@ -2,7 +2,7 @@ N = int(input())
 k = int(input())
 
 left = 1
-right = N**2
+right = k
 res = 0
 
 while left <= right:
