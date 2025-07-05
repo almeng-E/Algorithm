@@ -1,6 +1,6 @@
 import sys
 input = sys.stdin.readline
-sys.setrecursionlimit(10**7)
+sys.setrecursionlimit(10**5)
 
 
 steps = ((0, 1), (0, -1), (1, 0), (-1, 0))
