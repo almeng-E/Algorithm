@@ -13,28 +13,24 @@ for _ in range(M):
     graph[a].append((b, d))
     graph[b].append((a, d))
 
-# N --> 1 거꾸로
+# 1 --> N
 INF = float('inf')
-DP = [(INF, INF) for _ in range(N+1)]  # 총 비용, 총 거리
+# 그냥 1차원으로 하면 "상태"가 뭉개짐, 특정 금액(최소)일 때 출발을 시켜야함
+DP = [dict() for _ in range(N + 1)]
 
-hq = []
-hq.append((0, 0, N))    # 비용, 총 이동거리, 노드번호
-DP[N] = (0, 0)
+DP[1][oil[1]] = 0
+hq = [(0, 1, oil[1])]   # 비용, 위치, 현재까지의 최소 oil 비용
 
 while hq:
-    c_cost, c_dist, cur = heappop(hq)
-
-    # 유효한가?
-    if DP[cur] != (c_cost, c_dist):
+    cost, cur, cheapest = heappop(hq)
+    if cost > DP[cur].get(cheapest, INF):
         continue
 
-    for nxt, weight in graph[cur]:
-        n_dist = c_dist + weight
+    for nxt, w in graph[cur]:
+        n_cost = cost + cheapest * w
+        n_cheapest = min(cheapest, oil[nxt])
+        if n_cost < DP[nxt].get(n_cheapest, INF):
+            DP[nxt][n_cheapest] = n_cost
+            heappush(hq, (n_cost, nxt, n_cheapest))
 
-        n_cost = min(n_dist * oil[nxt], c_cost + oil[nxt] * weight)
-
-        if DP[nxt] > (n_cost, n_dist):
-            DP[nxt] = (n_cost, n_dist)
-            heappush(hq, (n_cost, n_dist, nxt))
-
-print(DP[1][0])
+print(min(DP[N].values()))
