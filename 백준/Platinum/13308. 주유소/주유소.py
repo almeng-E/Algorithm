@@ -1,7 +1,5 @@
 import sys
 input = sys.stdin.readline
-
-
 from heapq import heappop, heappush
 
 N, M = map(int, input().split())
@@ -21,10 +19,16 @@ DP = [dict() for _ in range(N + 1)]
 DP[1][oil[1]] = 0
 hq = [(0, 1, oil[1])]   # 비용, 위치, 현재까지의 최소 oil 비용
 
+res = INF
+
 while hq:
     cost, cur, cheapest = heappop(hq)
     if cost > DP[cur].get(cheapest, INF):
         continue
+    if cost >= res:
+        break
+    if cur == N:
+        res = min(res, cost)
 
     for nxt, w in graph[cur]:
         n_cost = cost + cheapest * w
@@ -33,4 +37,4 @@ while hq:
             DP[nxt][n_cheapest] = n_cost
             heappush(hq, (n_cost, nxt, n_cheapest))
 
-print(min(DP[N].values()))
+print(res)
