@@ -3,8 +3,6 @@ input = sys.stdin.readline
 
 import heapq
 
-import heapq
-
 
 N, M, K = map(int, input().split())
 graph = [[] for _ in range(N+1)]
