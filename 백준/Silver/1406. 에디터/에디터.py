@@ -1,5 +1,7 @@
 import sys
 input = sys.stdin.readline
+write = sys.stdout.write
+
 
 
 
@@ -29,7 +31,4 @@ for _ in range(M):
     elif cmd[0] == 'P':
         LS.append(cmd[1])
 
-for c in LS:
-    print(c, end="")
-for c in reversed(RS):
-    print(c, end="")
+write(''.join(LS + RS[::-1]))
