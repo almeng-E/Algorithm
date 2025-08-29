@@ -20,7 +20,7 @@ logs = []
 for i in range(1, N+1):
     x1, x2, y = map(int, input().split())
     logs.append((x1, x2, y, i))
-logs.sort(key=lambda x: (x[1], x[0]))
+logs.sort()
 
 
 right = logs[0][1]
@@ -30,9 +30,10 @@ for i in range(1, N):
     nxt = logs[i]
     if nxt[0] <= right:
         union(nxt[3], last_id)
+        right = max(nxt[1], right)
     else:
         last_id = nxt[3]
-    right = nxt[1]
+        right = nxt[1]
 
 for _ in range(Q):
     a, b = map(int, input().split())
