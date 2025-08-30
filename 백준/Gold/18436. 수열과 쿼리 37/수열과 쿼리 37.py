@@ -1,6 +1,8 @@
 import sys
 input = sys.stdin.readline
 
+# 세그먼트 트리 (떠올리기 쉽고 더 빠름)
+
 N = int(input())
 arr = list(map(int, input().split()))
 
