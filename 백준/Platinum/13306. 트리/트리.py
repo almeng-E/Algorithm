@@ -1,10 +1,11 @@
 import sys
 input = sys.stdin.readline
-sys.setrecursionlimit(10**4)
+
 
 def find(x):
-    if p[x] != x:
-        p[x] = find(p[x])
+    while p[x] != x:
+        p[x] = p[p[x]]
+        x = p[x]
     return p[x]
 
 def union(a, b):
@@ -42,6 +43,4 @@ for q in queries:
         else:
             out.append('NO')
 
-out.reverse()
-for o in out:
-    print(o)
+print("\n".join(reversed(out)))
