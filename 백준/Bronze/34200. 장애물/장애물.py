@@ -1,22 +1,24 @@
-N = int(input())
-arr = set(map(int, input().split()))
-MAX = max(arr)
+import sys
 
-cur = 0
-cnt = 0
-while cur < MAX:
-    if cur in arr:
-        cnt = -1
-        break
-    if cur+1 in arr:
-        cur += 2
-        cnt += 1
-        continue
-    if cur+2 in arr:
-        cur += 1
-        cnt += 1
-        continue
-    cur += 2
-    cnt += 1
+input = sys.stdin.readline
 
-print(cnt)
+N = int(input().strip())
+X = list(map(int, input().split()))
+
+for i in range(N - 1):
+    if X[i + 1] - X[i] == 1:
+        print(-1)
+        sys.exit(0)
+
+ans = 0
+
+ans += N
+
+ans += ((X[0] - 1) + 1) // 2
+for i in range(N - 1):
+    d = X[i + 1] - X[i]
+
+    if d >= 2:
+        ans += ((d - 2) + 1) // 2
+
+print(ans)
