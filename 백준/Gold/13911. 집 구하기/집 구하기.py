@@ -1,7 +1,6 @@
 import sys
 input = sys.stdin.readline
 
-
 from heapq import heappop, heappush
 
 V, E = map(int, input().split())
@@ -50,6 +49,8 @@ s_dist = [(y+1)] * (V+1)
 for st in starbucks:
     hq.append((0, st))
     s_dist[st] = 0
+ret = float('inf')
+
 
 while hq:
     d, cur = heappop(hq)
@@ -60,16 +61,13 @@ while hq:
         nd = d + w
         if s_dist[nxt] > nd:
             s_dist[nxt] = nd
-            heappush(hq, (nd, nxt))
 
-            if (nxt not in starbucks) and (nxt not in macdonalds):
-                S_SET.add(nxt)
+            if nxt in M_SET:
+                ret = min(ret, dist[nxt] + nd)
+            else:
+                heappush(hq, (nd, nxt))
 
-ret = float('inf')
-
-houses = M_SET & S_SET
-for h in houses:
-    ret = min(ret, dist[h] + s_dist[h])
 
 
 print(ret if ret != float('inf') else -1)
+
