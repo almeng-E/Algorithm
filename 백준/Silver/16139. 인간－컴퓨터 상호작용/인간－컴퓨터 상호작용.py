@@ -1,42 +1,26 @@
 import sys
 input = sys.stdin.readline
-
-
-S = input().rstrip()
-
-memo = [[] for _ in range(26)]
-res = []
-for i in range(len(S)):
-    j = ord(S[i]) - 97
-    memo[j].append(i)
-
-Q = int(input())
-for _ in range(Q):
-    cmd = input().split()
-    l, r = int(cmd[1]), int(cmd[2])
-
-    j = ord(cmd[0]) - 97
-
-    # 최적화 : 이진탐색
-    lc, rc = -1, -1
-
-    left, right = 0, len(memo[j]) - 1
-    while left <= right:
-        mid = (left + right) // 2
-        if memo[j][mid] < l:
-            lc = mid
-            left = mid + 1
-        else:
-            right = mid - 1
-
-    left, right = 0, len(memo[j]) - 1
-    while left <= right:
-        mid = (left + right) // 2
-        if memo[j][mid] <= r:
-            rc = mid
-            left = mid + 1
-        else:
-            right = mid - 1
-
-    res.append(str(rc - lc))
-print('\n'.join(res))
+def main():
+    S = input().rstrip()
+    
+    memo = [[0 for _ in range(len(S)+1)] for _ in range(26)]
+    for i in range(len(S)):
+        c = S[i]
+        idx = ord(c) - 97
+    
+        for j in range(26):
+            memo[j][i+1] = memo[j][i]
+    
+        memo[idx][i+1] += 1
+    
+    out = []
+    Q = int(input())
+    for _ in range(Q):
+        cmd = input().split()
+        idx = ord(cmd[0]) - 97
+        l, r = int(cmd[1]), int(cmd[2])
+    
+        out.append(str(memo[idx][r+1] - memo[idx][l]))
+    print('\n'.join(out))
+    
+main()
