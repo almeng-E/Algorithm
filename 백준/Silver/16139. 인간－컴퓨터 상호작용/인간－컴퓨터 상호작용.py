@@ -1,13 +1,14 @@
 import sys
 input = sys.stdin.readline
 
+
 S = input().rstrip()
 
-memo = [[(-1, 0)] for _ in range(26)]   # idx, cnt
-
+memo = [[] for _ in range(26)]
+res = []
 for i in range(len(S)):
     j = ord(S[i]) - 97
-    memo[j].append((i, memo[j][-1][1] + 1))
+    memo[j].append(i)
 
 Q = int(input())
 for _ in range(Q):
@@ -15,11 +16,27 @@ for _ in range(Q):
     l, r = int(cmd[1]), int(cmd[2])
 
     j = ord(cmd[0]) - 97
-    lc, rc = 0, 0
-    for idx, cnt in memo[j]:
-        if idx < l:
-            lc = max(lc, cnt)
-        if idx <= r:
-            rc = max(rc, cnt)
 
-    print(rc-lc)
+    # 최적화 : 이진탐색
+    lc, rc = -1, -1
+
+    left, right = 0, len(memo[j]) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if memo[j][mid] < l:
+            lc = mid
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    left, right = 0, len(memo[j]) - 1
+    while left <= right:
+        mid = (left + right) // 2
+        if memo[j][mid] <= r:
+            rc = mid
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    res.append(str(rc - lc))
+print('\n'.join(res))
