@@ -11,6 +11,8 @@ def find(r, c):
 
 def backtrack(x, y, sp, cur):
     global T, ret, steps, R, C, board
+    if sp + T - cur <= ret:
+        return
     if cur == T:
         ret = max(ret, sp)
         return
