@@ -1,6 +1,15 @@
 import sys
 input = sys.stdin.readline
 
+def merge(a, b):
+    x1, x2 = a
+    y1, y2 = b
+    if x1 > y1:
+        return x1, max(y1, y2, x2)
+    else:
+        return y1, max(x1, x2, y2)
+
+
 N = int(input())
 arr = list(map(int, input().split()))
 
@@ -9,16 +18,12 @@ while LEN < N:
     LEN <<= 1
 SIZE = LEN << 1
 
-tree = [[0, 0] for _ in range(SIZE)]
+tree = [(0, 0) for _ in range(SIZE)]
 
 for i in range(N):
-    tree[i+LEN][0] = arr[i]
+    tree[i+LEN] = (arr[i], 0)
 for i in range(LEN-1, 0, -1):
-    tmp = []
-    tmp.extend(tree[i*2])
-    tmp.extend(tree[i*2 + 1])
-    tmp.sort(reverse=True)
-    tree[i] = tmp[:2]
+    tree[i] = merge(tree[i*2], tree[i*2+1])
 
 
 M = int(input())
@@ -26,29 +31,24 @@ for _ in range(M):
     cmd = map(int, input().split())
     if next(cmd) == 1:
         idx = next(cmd)+LEN-1
-        tree[idx][0] = next(cmd)
+        tree[idx] = (next(cmd), 0)
         idx >>= 1
         while idx:
-            tmp = []
-            tmp.extend(tree[idx * 2])
-            tmp.extend(tree[idx * 2 + 1])
-            tmp.sort(reverse=True)
-            tree[idx] = tmp[:2]
+            tree[idx] = merge(tree[idx*2], tree[idx*2+1])
             idx >>= 1
 
     else:
         l = next(cmd) + LEN - 1
         r = next(cmd) + LEN - 1
-        tmp = []
+        tmp = [0, 0]
         while l <= r:
             if l&1:
-                tmp.extend(tree[l])
+                tmp = merge(tmp, tree[l])
                 l += 1
             if not (r&1):
-                tmp.extend(tree[r])
+                tmp = merge(tmp, tree[r])
                 r -= 1
             l >>= 1
             r >>= 1
 
-        tmp.sort(reverse=True)
-        print(sum(tmp[:2]))
+        print(sum(tmp))
