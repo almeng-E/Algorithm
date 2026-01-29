@@ -1,0 +1,37 @@
+
+
+# 별 : 4 / 동 : 3 / 네 : 2 / 세 : 1
+# 무승부 : D
+
+
+def count(li):
+	ret = [0, 0, 0, 0, 0]
+	for num in li:
+		ret[num] += 1
+	return ret
+
+
+
+N = int(input())
+for _ in range(N):
+	_, *a = map(int, input().split())
+	_, *b = map(int, input().split())
+
+	cnt_a = count(a)
+	cnt_b = count(b)
+	for i in range(4, 0, -1):
+		if cnt_a[i] > cnt_b[i]:
+			print('A')
+			break
+		elif cnt_a[i] < cnt_b[i]:
+			print('B')
+			break
+		else:
+			continue
+	else:
+		print('D')
+
+
+
+
+
