@@ -1,0 +1,7 @@
+N, M = map(int, input().split())
+
+salt = 7 / 100 * N
+ans = salt*100*100 // (N + M) 
+print(f'{ans/100:.2f}')
+
+
