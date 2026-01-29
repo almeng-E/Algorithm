@@ -1,0 +1,42 @@
+
+def dry(Q, diff):
+	Q.sort()
+	cur_l, cur_r = Q[0]
+	for l, r in Q[1:]:
+		if l > cur_r + 1:
+			diff[cur_l] -= 1
+			diff[cur_r + 1] += 1
+			cur_l, cur_r = l, r
+		else:
+			cur_r = max(cur_r, r)
+
+	diff[cur_l] -= 1
+	diff[cur_r + 1] += 1
+	
+		
+
+N, M = map(int, input().split())
+
+K = [0] + list(map(int, input().split()))
+
+diff = [0] * (N+2)
+Q = []
+for i in range(M):
+	s, e = map(int, input().split())
+	diff[s] += 1
+	diff[e+1] -= 1
+	Q.append((s, e))
+
+	if len(Q) == 3:
+		dry(Q, diff)
+		Q.clear()
+
+for i in range(1, N+1):
+	diff[i] += diff[i-1]
+	K[i] += diff[i]
+
+print(*K[1:])
+
+
+
+
