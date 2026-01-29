@@ -1,0 +1,16 @@
+
+N = int(input())
+A = list(map(int, input().split()))  # 0-index
+B = list(map(int, input().split()))
+
+K = int(input())
+while K > 0:
+	plus = 1
+	for i in range(N-1, -1, -1):
+		B[i] += plus
+		plus = B[i] // (A[i]+1)
+		B[i] %= (A[i]+1)
+	K -= 1
+print(''.join(map(str, B)))
+
+
