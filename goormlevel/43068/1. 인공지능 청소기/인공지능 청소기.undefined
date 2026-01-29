@@ -1,0 +1,21 @@
+
+def solve(dist, N):
+	if dist > N:
+		return 0
+
+	remain = N - dist
+	if remain & 1:
+		return 0
+	else:
+		return 1
+
+T = int(input())
+out = ["NO", "YES"]
+for _ in range(T):
+	X, Y, N = map(int, input().split())
+	dist = abs(X) + abs(Y)
+	print(out[solve(dist, N)])
+
+
+
+
