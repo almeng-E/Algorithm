@@ -1,0 +1,15 @@
+N = int(input())
+solo = set()
+for i in map(int, input().split()):
+	if -i in solo:
+		solo.remove(-i)
+	else:
+		solo.add(i)
+print(sum(solo))
+
+
+
+
+
+
+
