@@ -1,17 +1,30 @@
 import sys
 input = sys.stdin.readline
-N, K = map(int, input().split())
 
+
+# 가치 기준 풀이 : dict 와 update 이용
+N, K = map(int, input().split())
 items = [list(map(int, input().split())) for _ in range(N)]
 
-DP = [0] * (K+1)
+DP = {}
+DP[0] = 0
 
-items.sort(key=lambda x: x[0])
+for weight, value in items:
+    # 새로운 상태를 담을 dict
+    tmp = {}
+    for d_v, d_w in DP.items():
 
-for item, value in items:
-    for kg in range(K, item-1, -1):
-        # 넣는게 이득인지 판단
-        if DP[kg] < DP[kg - item] + value:
-            DP[kg] = DP[kg - item] + value
+        # index-out 체크
+        if d_w + weight > K:
+            continue
 
-print(DP[K])
+        # 갱신 가능한지 체크
+        if (d_v + value) in DP:
+            if DP[d_v + value] <= d_w + weight:
+                continue
+        tmp[d_v + value] = d_w + weight
+
+
+    DP.update(tmp)
+
+print(max(DP.keys()))
