@@ -1,12 +1,11 @@
 import sys
 input = sys.stdin.readline
-
 from collections import deque
 from itertools import product
 
 M, S = map(int, input().split())
-# board[횟수][x][y] = [d] of fish
-board = [[[[] for _ in range(4)] for _ in range(4)] for _ in range(S+1)]
+# board[횟수][x][y][d] = 해당 칸에서 d방향 물고기 수
+board = [[[[0] * 8 for _ in range(4)] for _ in range(4)] for _ in range(S + 1)]
 
 smell = [[deque() for _ in range(4)] for _ in range(4)]
 
@@ -17,8 +16,7 @@ s_d = (2, 0, 6, 4)
 s_moves = list(product(s_d, repeat=3))
 for _ in range(M):
     fx, fy, fd = map(int, input().split())
-    board[0][fx-1][fy-1].append(fd-1)
-
+    board[0][fx-1][fy-1][fd-1] += 1
 sx, sy = map(int, input().split())
 sx -= 1
 sy -= 1
@@ -26,20 +24,27 @@ for time in range(S):
     cur = board[time]
     nxt = board[time+1]
 
+    # 물고기 이동
     for x in range(4):
         for y in range(4):
-            for d in cur[x][y]:
+            for d in range(8):
+                fish_cnt = cur[x][y][d]
+                if fish_cnt == 0:
+                    continue
                 for k in range(8):
-                    nd = (d - k) % 8
+                    nd = (d-k) % 8
                     dx, dy = steps[nd]
-                    nx, ny = x+dx, y+dy
-                    if nx < 0 or nx >= 4 or ny < 0 or ny >= 4 or smell[nx][ny] or (nx, ny) == (sx, sy):
+                    nx, ny = x + dx, y + dy
+                    if nx < 0 or nx >= 4 or ny < 0 or ny >= 4:
                         continue
-                    nxt[nx][ny].append(nd)
+                    if smell[nx][ny] or (nx, ny) == (sx, sy):
+                        continue
+                    nxt[nx][ny][nd] += fish_cnt
                     break
                 else:
-                    nxt[x][y].append(d)
+                    nxt[x][y][d] += fish_cnt
 
+    # 상어
     cur_max = -1
     max_j = -1
 
@@ -56,7 +61,7 @@ for time in range(S):
                 break
 
             if (x, y) not in visited:
-                cnt += len(nxt[x][y])
+                cnt += sum(nxt[x][y])
                 visited.add((x, y))
         else:
             if cur_max < cnt:
@@ -67,9 +72,9 @@ for time in range(S):
         dx, dy = steps[sd]
         sx += dx
         sy += dy
-        if nxt[sx][sy]:
+        if sum(nxt[sx][sy]) > 0:
             smell[sx][sy].append(time+1)
-            nxt[sx][sy].clear()
+            nxt[sx][sy] = [0] * 8
 
     for x in range(4):
         for y in range(4):
@@ -78,11 +83,12 @@ for time in range(S):
 
     for x in range(4):
         for y in range(4):
-            nxt[x][y].extend(cur[x][y])
+            for d in range(8):
+                nxt[x][y][d] += cur[x][y][d]
 
 ans = 0
 for x in range(4):
     for y in range(4):
-        ans += len(board[S][x][y])
+        ans += sum(board[S][x][y])
 
 print(ans)
