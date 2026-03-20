@@ -29,6 +29,8 @@ while True:
     fish = []
     while q:
         x, y, d = q.popleft()
+        if d+1 > fd:
+            continue
         for dx, dy in steps:
             nx, ny, nd = x+dx, y+dy, d+1
             if nx < 0 or nx >= N or ny < 0 or ny >= N or v[nx][ny] or board[nx][ny] > SIZE:
