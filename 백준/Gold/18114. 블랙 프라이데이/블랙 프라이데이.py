@@ -1,43 +1,30 @@
 import sys
 input = sys.stdin.readline
 
+from bisect import bisect_left
+
+N, C = map(int, input().split())
+arr = list(map(int, input().split()))
+arr.sort()
+
 
 def solve():
-    N, C = map(int, input().split())
-    arr = list(map(int, input().split()))
-    arr.sort()
-    
-    l, r = 0, N-1
-    while l <= r:
-        m = (l+r) >> 1
-        if arr[m] == C:
-            return 1
-        elif arr[m] < C:
-            l = m+1
-        else:
-            r = m-1
-
-    l, r = 0, N-1
-    while l < r:
-        s = arr[l] + arr[r]
-        if s == C:
-            return 1
-        elif s < C:
-            l += 1
-        else:
-            r -= 1
+    b = bisect_left(arr, C)
+    if b < N and arr[b] == C:
+        return 1
 
     for i in range(N):
         tg = C - arr[i]
-        l, r = i+1, N-1
-        while l < r:
-            s = arr[l] + arr[r]
-            if s == tg:
+        b = bisect_left(arr, tg, i+1)
+        if b < N and arr[b] == tg:
+            return 1
+
+        for j in range(i+1, N):
+            tg = C - arr[i] - arr[j]
+            b = bisect_left(arr, tg, j+1)
+            if b < N and arr[b] == tg:
                 return 1
-            elif s < tg:
-                l += 1
-            else:
-                r -= 1
     return 0
+
 
 print(solve())
