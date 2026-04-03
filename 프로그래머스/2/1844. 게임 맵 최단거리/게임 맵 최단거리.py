@@ -1,23 +1,28 @@
 from collections import deque
+
 def solution(maps):
-    steps = ((0, 1), (0, -1), (1, 0), (-1, 0))
-    
+    answer = 0
     N = len(maps)
     M = len(maps[0])
-    visited = [[-1 for _ in range(M)] for _ in range(N)]
-    visited[0][0] = 1
-    queue = deque()
-    queue.append((0, 0))
-    while queue:
-        x, y = queue.popleft()
-        
-        if (x, y) == (N-1, M-1):
-            break
+    INF = float('inf')
+    steps = ((0, 1), (1, 0), (0, -1), (-1, 0))
+    
+    
+    
+    q = deque()
+    q.append((0, 0, 1))
+    v = [[INF] * M for _ in range(N)]
+    v[0][0] = 1
+    while q:
+        x, y, d = q.popleft()
+        if x == N-1 and y == M-1:
+            return d
         
         for dx, dy in steps:
             nx, ny = x+dx, y+dy
-            if 0 <= nx < N and 0 <= ny < M and maps[nx][ny] and visited[nx][ny] == -1:
-                visited[nx][ny] = visited[x][y] + 1
-                queue.append((nx, ny))
-    
-    return visited[N-1][M-1]
+            if nx < 0 or nx >= N or ny < 0 or ny >= M or maps[nx][ny] == 0:
+                continue
+            if v[nx][ny] > d+1:
+                v[nx][ny] = d+1
+                q.append((nx, ny, d+1))
+    return -1               
