@@ -12,8 +12,4 @@ def solution(numbers, target):
                 tmp -= numbers[i]
         if tmp == target:
             answer += 1  
-    
-    
-    
-    
     return answer
