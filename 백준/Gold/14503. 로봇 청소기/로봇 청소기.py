@@ -1,60 +1,40 @@
 import sys
 input = sys.stdin.readline
 
-
-def check(i, j, room):
-    global direction, steps
+def check(x, y):
     for dx, dy in steps:
-        if 0 <+ i+dx < N and 0 <= j+dy < M:
-            if room[i+dx][j+dy] == 0:
-                return True
-    return False
+        nx, ny = x+dx, y+dy
+        if board[nx][ny] == 0 and not cleaned[nx][ny]:
+            return 1
+    return 0
 
 
-# 인덱스 0,0 ~ n-1,m-1 ... 그대로 사용 and 출력
-# 0이면 더러움, 1은 벽         ==> 청소됨 2
 N, M = map(int, input().split())
-R, C, D = map(int, input().split())
-#           북 동 남 서
-steps = ((-1, 0 ), (0, +1), (+1, 0), (0, -1))
+x, y, d = map(int, input().split())
 
-room = [list(map(int, input().split())) for _ in range(N)]
-cnt = 0
-i, j = R, C
+# 북 동 남 서
+steps = ((-1, 0), (0, 1), (1, 0), (0, -1))
+board = [list(map(int, input().split())) for _ in range(N)]
+cleaned = [[0] * M for _ in range(N)]
+ans = 0
 while True:
-    # 현재 칸 청소
-    if room[i][j] == 0:
-        cnt += 1
-        room[i][j] = 2
+    if not cleaned[x][y]:
+        cleaned[x][y] = 1
+        ans += 1
 
-    # 4방향 탐색
-    # 더러운 방이 있으면
-    if check(i, j, room):
-        for _ in range(4):
-            # d 변경
-            D -= 1
-            if D == -1:
-                D = 3
-            # 회전 후 앞 더러우면 go
-            if room[i + steps[D][0]][j + steps[D][1]] == 0:
-                i = i + steps[D][0]
-                j = j + steps[D][1]
-                break
-            # 아니면 계속 변경
-            else:
-                continue
-        continue
-    # 없으면
-    else:
-        # 후진 할 수 없으면 break
-        if room[i - steps[D][0]][j - steps[D][1]] == 1:
+    if not check(x, y):
+        bd = (d+2)%4
+        bx, by = x+steps[bd][0], y+steps[bd][1]
+        if board[bx][by]:
             break
-        # 후진
         else:
-            i = i - steps[D][0]
-            j = j - steps[D][1]
+            x, y = bx, by
             continue
-print(cnt)
+    else:
+        d = (d-1)%4
+        nx, ny = x+steps[d][0], y+steps[d][1]
+        if board[nx][ny] == 0 and not cleaned[nx][ny]:
+            x, y = nx, ny
+            continue
 
-
-
+print(ans)
