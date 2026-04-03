@@ -1,14 +1,12 @@
 import sys
 input = sys.stdin.readline
-
-from heapq import heappop, heappush
-
+from collections import deque
 
 def forward(x, y, d, mc):
     nx, ny = x + steps[d][0], y + steps[d][1]
     if 0 <= nx < N and 0 <= ny < N and board[nx][ny] != '*' and v[nx][ny][d] > mc:
         v[nx][ny][d] = mc
-        heappush(hq, (mc, nx, ny, d))
+        q.appendleft((mc, nx, ny, d))
 
 
 def turn(x, y, d, mc):
@@ -17,7 +15,8 @@ def turn(x, y, d, mc):
         nx, ny = x+steps[nd][0], y+steps[nd][1]
         if 0 <= nx < N and 0 <= ny < N and board[nx][ny] != '*' and v[nx][ny][nd] > mc + 1:
             v[nx][ny][nd] = mc+1
-            heappush(hq, (mc+1, nx, ny, nd))
+            q.append((mc+1, nx, ny, nd))
+
 
 N = int(input())
 board = [list(input().rstrip()) for _ in range(N)]
@@ -35,17 +34,17 @@ for i in range(N):
 
 # v[x][y][d]
 v = [[[float('inf') for _ in range(4)] for _ in range(N)] for _ in range(N)]
-hq = []
+q = deque()
 for i in range(4):
     dx, dy = steps[i]
     nx, ny = sx+dx, sy+dy
     if nx < 0 or nx >= N or ny < 0 or ny >= N or board[nx][ny] == '*':
         continue
-    heappush(hq, (0, nx, ny, i))
+    q.append((0, nx, ny, i))
     v[nx][ny][i] = 0
 
-while hq:
-    mc, x, y, d = heappop(hq)
+while q:
+    mc, x, y, d = q.popleft()
     if v[x][y][d] < mc:
         continue
     if x == ex and y == ey:
