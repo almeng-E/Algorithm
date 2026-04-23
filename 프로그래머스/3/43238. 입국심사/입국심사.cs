@@ -21,7 +21,7 @@ public class Solution {
         N = n;
         
         long l = 0;
-        long r = (long)Math.Pow(10, 18);
+        long r = 1_000_000_000_000_000_000L;
         while (l <= r) {
             long mid = (l+r) >> 1;
             if (check(mid)) {
