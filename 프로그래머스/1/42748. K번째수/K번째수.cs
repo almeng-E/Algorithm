@@ -12,11 +12,7 @@ public class Solution {
             int j = commands[qi,1] - 1;
             int k = commands[qi,2] - 1;
             
-            // 슬라이싱 어케하더라; arr랑 list 헷갈림;
-            var tmp = new List<int>();
-            for (int idx=i; idx<=j; ++idx) {
-                tmp.Add(array[idx]);
-            }
+            var tmp = array.Skip(i).Take(j-i+1).ToList();
             tmp.Sort();
             answer[qi] = tmp[k];
         }
