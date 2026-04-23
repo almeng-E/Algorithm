@@ -6,7 +6,8 @@ using System.Linq;
 class Program
 {
     static StreamReader sr = new StreamReader(new BufferedStream(Console.OpenStandardInput()));
-
+    static StreamWriter sw = new StreamWriter(new BufferedStream(Console.OpenStandardOutput()));
+    
     static int ReadInt()
     {
         int ret = 0;
@@ -70,9 +71,9 @@ class Program
                 l >>= 1;
                 r >>= 1;
             }
-            ans.Add(max);
+            sw.Write(max + " ");
         }
-        Console.WriteLine(string.Join(" ", ans));       
-        
+        sw.Flush();
+        sw.Close();        
     }
 }
