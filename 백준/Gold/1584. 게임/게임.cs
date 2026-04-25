@@ -43,7 +43,6 @@ class Program {
 
 public class Solution {
     public int solution(int N, int[,] dangerZones, int M, int[,] deathZones) {
-        int answer = -1;
         int[] dx = new int[]{0, 0, 1, -1};
         int[] dy = new int[]{1, -1, 0, 0};
         int[,] board = new int[501,501];
@@ -80,32 +79,37 @@ public class Solution {
             }
         }
         V[0,0] = 0;
-        
-        var PQ = new SortedSet<(int d, int x, int y)>();
-        PQ.Add((0, 0, 0));
 
-        while (PQ.Count > 0) {
-            var top = PQ.Min;
-            PQ.Remove(top);
-            int d = top.d;
+        // 0-1 BFS... 링크드리스트로 비슷하게...
+        var dq = new LinkedList<(int x, int y, int d)>();
+        dq.AddLast((0, 0, 0));
+        while (dq.Count > 0) {
+            var top = dq.First.Value;
+            dq.RemoveFirst();
             int x = top.x;
             int y = top.y;
-            if (V[x,y] < d) continue;
+            int d = top.d;
+
+            if (x==500 && y==500) {
+                return V[500,500];
+            }
 
             for (int i=0; i<4; ++i) {
                 int nx = x+dx[i];
                 int ny = y+dy[i];
-                if (nx<0 || nx>500 || ny<0 || ny>500 || board[nx,ny] == -1) continue;
-                int nd = d+board[nx,ny];
-                if (V[nx,ny] > nd) {
+                if (nx<0 || nx>500 || ny<0 || ny>500 || board[nx,ny]==-1 || V[nx,ny] != INF) continue;
+                if (board[nx,ny] == 0) {
+                    int nd = d;
                     V[nx,ny] = nd;
-                    PQ.Add((nd, nx, ny));
+                    dq.AddFirst((nx, ny, nd));
+                }
+                else {
+                    int nd = d+1;
+                    V[nx,ny] = nd;
+                    dq.AddLast((nx, ny, nd));
                 }
             }
         }
-        if (V[500,500] != INF) {
-            answer = V[500,500];
-        }
-        return answer;
+        return -1;
     }
 }
