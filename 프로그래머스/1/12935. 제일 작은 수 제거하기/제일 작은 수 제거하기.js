@@ -1,10 +1,16 @@
 function solution(arr) {
     const answer = [];
-    let min = Math.min(...arr);
-    for (const i of arr) {
-        if (i===min) continue;
-        answer.push(i);
+    let MIN = Infinity;
+    for (let i=0; i<arr.length; ++i) {
+        if (MIN > arr[i]) {
+            MIN = arr[i];
+        }
     }
-    if (answer.length === 0) answer.push(-1)
-    return answer;
+    for (const x of arr) {
+        if (x === MIN) continue;
+        answer.push(x);
+    }
+    
+    
+    return (answer.length > 0) ? answer : [-1];
 }
