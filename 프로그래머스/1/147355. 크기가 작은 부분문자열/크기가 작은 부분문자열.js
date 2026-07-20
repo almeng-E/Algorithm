@@ -1,12 +1,11 @@
 function solution(t, p) {
     let answer = 0;
-    const len = p.length;
-    const num = Number(p);
-
-    for (let i=0; i<t.length-len+1; ++i) {
-        if (Number(t.slice(i, i+len)) <= num) answer++;
-    }
     
+    const N = p.length;
+    p = Number(p);
+    for (let i=0; i<=t.length-N; ++i) {
+        answer += (Number(t.slice(i, i+N)) <= p) ? 1 : 0;
+    }
     
     return answer;
 }
