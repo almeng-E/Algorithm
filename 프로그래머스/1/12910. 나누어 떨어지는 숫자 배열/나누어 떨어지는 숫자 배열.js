@@ -1,12 +1,13 @@
 function solution(arr, divisor) {
     const answer = [];
     
-    for (const i of arr) {
-        if (i%divisor === 0) answer.push(i);
+    for (const x of arr) {
+        if ((x % divisor) === 0) {
+            answer.push(x);
+        }
     }
-    
+    if (answer.length === 0) answer.push(-1);
     answer.sort((a, b) => a-b);
-    if (answer.length === 0) return [-1];
     
     return answer;
 }
