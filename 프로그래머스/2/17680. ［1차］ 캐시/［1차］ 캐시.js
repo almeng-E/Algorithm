@@ -1,33 +1,31 @@
 function solution(cacheSize, cities) {
     let answer = 0;
-    const cache = new Set();
-    if (cacheSize === 0) {
-        return cities.length * 5;
-    }
-    for (const c of cities) {
-        const cur = c.toLowerCase();
-        if (cache.has(cur)) {
+    
+    if (cacheSize === 0) return cities.length*5;
+    
+    const C = new Set();
+    
+    
+    for (let city of cities) {
+        city = city.toLowerCase();
+        if (C.has(city)) {
             // hit
             answer += 1;
             
-            cache.delete(cur);
-            cache.add(cur);
+            C.delete(city);
+            C.add(city);
         }
         else {
             // miss
             answer += 5;
             
-            if (cacheSize === cache.size) {
-                cache.delete(cache.values().next().value);
+            if (C.size === cacheSize) {
+                const [nxt] = C;
+                C.delete(nxt);
             }
-            cache.add(cur);
-            
+            C.add(city);
         }
-        
-        
     }
-    
-    
     
     return answer;
 }
